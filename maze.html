@@ -1,0 +1,940 @@
+<!DOCTYPE html><!--  This site was created in Webflow. https://webflow.com  --><!--  Last Published: Thu Jan 16 2025 10:08:53 GMT+0000 (Coordinated Universal Time)  -->
+<html data-wf-page="67866f9b434a898b33982cba" data-wf-site="656660cb808a92be1eef2a99">
+<head>
+  <meta charset="utf-8">
+  <title>Maze</title>
+  <meta content="Maze" property="og:title">
+  <meta content="Maze" property="twitter:title">
+  <meta content="width=device-width, initial-scale=1" name="viewport">
+  <meta content="Webflow" name="generator">
+  <link href="css/normalize.css" rel="stylesheet" type="text/css">
+  <link href="css/webflow.css" rel="stylesheet" type="text/css">
+  <link href="css/irex-intaractives.webflow.css" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin="anonymous">
+  <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js" type="text/javascript"></script>
+  <script type="text/javascript">WebFont.load({  google: {    families: ["Montserrat:100,100italic,200,200italic,300,300italic,400,400italic,500,500italic,600,600italic,700,700italic,800,800italic,900,900italic"]  }});</script>
+  <script type="text/javascript">!function(o,c){var n=c.documentElement,t=" w-mod-";n.className+=t+"js",("ontouchstart"in o||o.DocumentTouch&&c instanceof DocumentTouch)&&(n.className+=t+"touch")}(window,document);</script>
+  <link href="images/favicon.png" rel="shortcut icon" type="image/x-icon">
+  <link href="images/webclip.png" rel="apple-touch-icon">
+  <style>
+::selection {background: #FD92FE; color: #262731; text-shadow: none;}
+</style>
+  <style>
+.with-gsap, .with-js {
+	cursor: none;
+}
+</style>
+</head>
+<body class="body">
+  <div class="page-wrapper cursor-style">
+    <div class="global-styles w-embed">
+      <style>
+/* Get rid of top margin on first element in any rich text element */
+.w-richtext > :not(div):first-child, .w-richtext > div:first-child > :first-child {
+  margin-top: 0 !important;
+}
+/* Get rid of bottom margin on last element in any rich text element */
+.w-richtext>:last-child, .w-richtext ol li:last-child, .w-richtext ul li:last-child {
+	margin-bottom: 0 !important;
+}
+/* 
+Make the following elements inherit typography styles from the parent and not have hardcoded values. 
+Important: You will not be able to style for example "All Links" in Designer with this CSS applied.
+Uncomment this CSS to use it in the project. Leave this message for future hand-off.
+*/
+/*
+a,
+.w-input,
+.w-select,
+.w-tab-link,
+.w-nav-link,
+.w-dropdown-btn,
+.w-dropdown-toggle,
+.w-dropdown-link {
+  color: inherit;
+  text-decoration: inherit;
+  font-size: inherit;
+}
+*/
+/* Prevent all click and hover interaction with an element */
+.pointer-events-off {
+	pointer-events: none;
+}
+/* Enables all click and hover interaction with an element */
+.pointer-events-on {
+  pointer-events: auto;
+}
+/* Snippet enables you to add class of div-square which creates and maintains a 1:1 dimension of a div.*/
+.div-square::after {
+  content: "";
+  display: block;
+  padding-bottom: 100%;
+}
+/*Hide focus outline for main content element*/
+    main:focus-visible {
+    outline: -webkit-focus-ring-color auto 0px;
+}
+/* Make sure containers never lose their center alignment*/
+.container-medium, .container-small, .container-large {
+  margin-right: auto !important;
+  margin-left: auto !important;
+}
+/*Reset selects, buttons, and links styles*/
+.w-input, .w-select, a {
+color: inherit;
+text-decoration: inherit;
+font-size: inherit;
+}
+/*Apply "..." after 3 lines of text */
+.text-style-3lines {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+}
+/* Apply "..." after 2 lines of text */
+.text-style-2lines {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+/* Apply "..." at 100% width */
+.truncate-width { 
+		width: 100%; 
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+}
+/* Removes native scrollbar */
+.no-scrollbar {
+    -ms-overflow-style: none;  // IE 10+
+    overflow: -moz-scrollbars-none;  // Firefox
+}
+.no-scrollbar::-webkit-scrollbar {
+    display: none; // Safari and Chrome
+}
+/* Adds inline flex display */
+.display-inlineflex {
+  display: inline-flex;
+}
+/* These classes are never overwritten */
+.hide {
+  display: none !important;
+}
+@media screen and (max-width: 991px) {
+    .hide, .hide-tablet {
+        display: none !important;
+    }
+}
+  @media screen and (max-width: 767px) {
+    .hide-mobile-landscape{
+      display: none !important;
+    }
+}
+  @media screen and (max-width: 479px) {
+    .hide-mobile{
+      display: none !important;
+    }
+}
+.margin-0 {
+  margin: 0rem !important;
+}
+.padding-0 {
+  padding: 0rem !important;
+}
+.spacing-clean {
+padding: 0rem !important;
+margin: 0rem !important;
+}
+.margin-top {
+  margin-right: 0rem !important;
+  margin-bottom: 0rem !important;
+  margin-left: 0rem !important;
+}
+.padding-top {
+  padding-right: 0rem !important;
+  padding-bottom: 0rem !important;
+  padding-left: 0rem !important;
+}
+.margin-right {
+  margin-top: 0rem !important;
+  margin-bottom: 0rem !important;
+  margin-left: 0rem !important;
+}
+.padding-right {
+  padding-top: 0rem !important;
+  padding-bottom: 0rem !important;
+  padding-left: 0rem !important;
+}
+.margin-bottom {
+  margin-top: 0rem !important;
+  margin-right: 0rem !important;
+  margin-left: 0rem !important;
+}
+.padding-bottom {
+  padding-top: 0rem !important;
+  padding-right: 0rem !important;
+  padding-left: 0rem !important;
+}
+.margin-left {
+  margin-top: 0rem !important;
+  margin-right: 0rem !important;
+  margin-bottom: 0rem !important;
+}
+.padding-left {
+  padding-top: 0rem !important;
+  padding-right: 0rem !important;
+  padding-bottom: 0rem !important;
+}
+.margin-horizontal {
+  margin-top: 0rem !important;
+  margin-bottom: 0rem !important;
+}
+.padding-horizontal {
+  padding-top: 0rem !important;
+  padding-bottom: 0rem !important;
+}
+.margin-vertical {
+  margin-right: 0rem !important;
+  margin-left: 0rem !important;
+}
+.padding-vertical {
+  padding-right: 0rem !important;
+  padding-left: 0rem !important;
+}
+.button() {
+-webkit-backface-visibility: hidden;
+-moz-backface-visibility: hidden;
+-webkit-transform: translate3d(0, 0, 0);
+-moz-transform: translate3d(0, 0, 0)
+}
+</style>
+      <style>
+@media (any-hover: none) {
+	.cursor-wrapper,
+  .js-cursor,
+  .gsap-cursor {
+  	display: none;
+  }
+}
+</style>
+    </div>
+    <main class="main-wrapper">
+      <div class="bg-blue">
+        <div class="section-hero">
+          <div class="padding-global">
+            <div class="container-large">
+              <div class="hero_component flex">
+                <div data-animation="default" class="navbar_component w-nav" data-easing2="ease" fs-scrolldisable-element="smart-nav" data-easing="ease" data-collapse="medium" data-w-id="df788746-163f-75b4-2f44-1889a6911d50" role="banner" data-duration="400">
+                  <div class="menu"></div>
+                  <div class="navbar_container">
+                    <div class="navbar_links">
+                      <a href="#" class="navbar1_logo-link cursor-style w-nav-brand"><img loading="lazy" src="images/logo-irex.svg" alt="" class="navbar1_logo"></a>
+                      <a href="#" class="navbar2_logo-link cursor-style w-nav-brand"><img loading="lazy" src="images/logo-usaid.svg" alt="" class="navbar2_logo"></a>
+                    </div>
+                    <nav role="navigation" class="navbar_menu is-page-height-tablet w-nav-menu">
+                      <div class="navbar_menu-links is-tablet">
+                        <a href="#" class="button-link cursor-style header w-inline-block">
+                          <div class="m-text-link color capitalize">ПРО ЛАБІРИНТ</div>
+                        </a>
+                        <a href="#" class="button-link cursor-style header w-inline-block">
+                          <div class="m-text-link color capitalize">про кімнати</div>
+                        </a>
+                        <a href="#" class="button-link cursor-style header w-inline-block">
+                          <div class="m-text-link color capitalize">кімнати</div>
+                        </a>
+                        <a href="#" class="button-link cursor-style header w-inline-block">
+                          <div class="m-text-link color capitalize">аудіогід</div>
+                        </a>
+                      </div>
+                    </nav>
+                    <div class="nav-block cursor-style">
+                      <a href="#" class="button-link cursor-style cta-btn w-inline-block">
+                        <div class="m-text-link color capitalize white">ДО ЛАБІРИНТУ</div>
+                      </a>
+                      <div class="navbar_menu-button w-nav-button">
+                        <div class="menu-icon">
+                          <div class="menu-icon_line-top"></div>
+                          <div class="menu-icon_line-middle">
+                            <div class="menu-icon_line-middle-inner"></div>
+                          </div>
+                          <div class="menu-icon_line-bottom"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="w-layout-grid hero_content custom">
+                  <div id="w-node-f4625a0b-60a6-927d-3079-296c93f5e12f-33982cba" class="hero-desktop">
+                    <h1 class="h1-m-700-42-50-b blue">Не віррр — ﻿перевіррр, що Лабіринт Медіаграмотності тепер доступний онлайн!</h1><img src="images/hero-desktop.png" loading="lazy" sizes="(max-width: 479px) 368.296875px, (max-width: 767px) 77vw, (max-width: 991px) 79vw, (max-width: 1279px) 84vw, (max-width: 1919px) 86vw, 1280px" srcset="images/hero-desktop-p-500.png 500w, images/hero-desktop-p-800.png 800w, images/hero-desktop-p-1080.png 1080w, images/hero-desktop.png 1232w" alt="" class="hero-img-desktop">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="section-manual">
+          <div class="padding-global">
+            <div class="container-large">
+              <div class="hero_component">
+                <div class="w-layout-grid hero_content flex">
+                  <div id="w-node-ceeb685d-19e3-b8ff-a852-54127d610218-33982cba" class="header-text">
+                    <h2 class="h2-m-700-52-60-w align-center">Ласий/-а на знання<br>як кіт на ковбаси?</h2>
+                    <div class="subheading-m-600-18-26 align-center">У Лабіринті на тебе чекає 10 інтерактивних кімнат,<br>у яких ти навчишся розплутувати клубок із фейків та фактів.</div>
+                  </div>
+                  <div class="lottie">
+                    <div class="lottie-animation" data-w-id="1a240e71-251f-d93a-a32c-205eb99bc28c" data-animation-type="lottie" data-src="documents/animation_desktop.json" data-loop="0" data-direction="1" data-autoplay="1" data-is-ix2-target="0" data-renderer="svg" data-default-duration="0" data-duration="1"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="section-slider">
+          <div class="padding-global slider">
+            <div class="container-large">
+              <div class="hero_component slider">
+                <div class="w-layout-grid hero_content slider">
+                  <div id="w-node-c7c06a55-789a-5c0b-adc5-c0af5c2ead45-33982cba" class="container-medium">
+                    <div class="arrow-wrapper">
+                      <h2 class="h2-heading-style">Що чекає на тебе<br> у кожній кімнаті?</h2>
+                      <div class="arrow-wrap">
+                        <a href="#" class="swiper-button-prev cursor-style w-inline-block">
+                          <div class="icon-embed-xsmall w-embed"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewbox="0 0 28 28" fill="none">
+                              <path d="M3.75594 14.6191L11.6309 22.4941C11.7951 22.6582 12.0178 22.7505 12.25 22.7505C12.4822 22.7505 12.7049 22.6582 12.8691 22.4941C13.0332 22.3299 13.1255 22.1072 13.1255 21.875C13.1255 21.6428 13.0332 21.4201 12.8691 21.2559L6.48703 14.875H23.625C23.8571 14.875 24.0796 14.7828 24.2437 14.6187C24.4078 14.4546 24.5 14.2321 24.5 14C24.5 13.7679 24.4078 13.5454 24.2437 13.3813C24.0796 13.2172 23.8571 13.125 23.625 13.125H6.48703L12.8691 6.74406C13.0332 6.57988 13.1255 6.35719 13.1255 6.125C13.1255 5.8928 13.0332 5.67012 12.8691 5.50594C12.7049 5.34175 12.4822 5.24951 12.25 5.24951C12.0178 5.24951 11.7951 5.34175 11.6309 5.50594L3.75594 13.3809C3.67458 13.4622 3.61004 13.5587 3.56601 13.6649C3.52198 13.7711 3.49931 13.885 3.49931 14C3.49931 14.115 3.52198 14.2288 3.56601 14.3351C3.61004 14.4413 3.67458 14.5378 3.75594 14.6191Z" fill="white"></path>
+                            </svg></div>
+                        </a>
+                        <a href="#" class="swiper-button-next cursor-style w-inline-block">
+                          <div class="icon-embed-xsmall w-embed"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewbox="0 0 28 28" fill="none">
+                              <path d="M24.2441 14.6191L16.3691 22.4941C16.2049 22.6582 15.9822 22.7505 15.75 22.7505C15.5178 22.7505 15.2951 22.6582 15.1309 22.4941C14.9668 22.3299 14.8745 22.1072 14.8745 21.875C14.8745 21.6428 14.9668 21.4201 15.1309 21.2559L21.513 14.875H4.375C4.14294 14.875 3.92038 14.7828 3.75628 14.6187C3.59219 14.4546 3.5 14.2321 3.5 14C3.5 13.7679 3.59219 13.5454 3.75628 13.3813C3.92038 13.2172 4.14294 13.125 4.375 13.125H21.513L15.1309 6.74406C14.9668 6.57988 14.8745 6.35719 14.8745 6.125C14.8745 5.8928 14.9668 5.67012 15.1309 5.50594C15.2951 5.34175 15.5178 5.24951 15.75 5.24951C15.9822 5.24951 16.2049 5.34175 16.3691 5.50594L24.2441 13.3809C24.3254 13.4622 24.39 13.5587 24.434 13.6649C24.478 13.7711 24.5007 13.885 24.5007 14C24.5007 14.115 24.478 14.2288 24.434 14.3351C24.39 14.4413 24.3254 14.5378 24.2441 14.6191Z" fill="white"></path>
+                            </svg></div>
+                        </a>
+                      </div>
+                    </div>
+                    <div class="spacer-medium"></div>
+                    <div class="swiper-container">
+                      <div class="swiper-wrapper">
+                        <div class="swiper-slide">
+                          <div id="w-node-c7c06a55-789a-5c0b-adc5-c0af5c2ead52-33982cba" class="feature-card"><img loading="lazy" src="images/slide-1.png" alt="" class="slider-img">
+                            <div class="spacer-small"></div>
+                            <h3 class="h4-heading-style">Інформаційний шум</h3>
+                            <div class="spacer-xsmall"></div>
+                            <p class="paragraph-slide">Прислухайся, чи не оточує тебе інформаційний шум. У цій онлайн-кімнаті, чи там, де ти зараз фізично знаходишся. От уяви, що б ти встиг/-ла зробити за 6 років  і 8 місяців. А це той час, який людина в середньому проводить у соцмережах за все своє життя. Може зараз вдалий момент дістати віничок і почистити інформаційний простір навколо себе?</p>
+                          </div>
+                        </div>
+                        <div class="swiper-slide">
+                          <div id="w-node-c7c06a55-789a-5c0b-adc5-c0af5c2ead60-33982cba" class="feature-card"><img loading="lazy" src="images/slide-2.png" alt="" class="slider-img">
+                            <div class="spacer-small"></div>
+                            <h4 class="h4-heading-style">Фейки</h4>
+                            <div class="spacer-xsmall"></div>
+                            <p class="paragraph-slide">Намотуй на вуса алгоритм викриття <br>фейкових публікацій. Котик Сімба упіймав п&#x27;ять карасиків на один кіготь, а про цього героя ніхто не пише... Може ти допоможеш? Допоможеш викрити неправдиву новину. А які зображення до цієї події міг би згенерувати штучний інтелект...</p>
+                          </div>
+                        </div>
+                        <div class="swiper-slide">
+                          <div id="w-node-c7c06a55-789a-5c0b-adc5-c0af5c2ead6e-33982cba" class="feature-card"><img loading="lazy" src="images/slide-3.png" alt="" class="slider-img">
+                            <div class="spacer-small"></div>
+                            <h4 class="h4-heading-style">Маніпуляції</h4>
+                            <div class="spacer-xsmall"></div>
+                            <p class="paragraph-slide">У цій кімнаті згадай, скільки разів твоїми емоціями намагались маніпулювати через «беззаперечні факти»? А як ненав&#x27;язливо закликали дізнатися «Унікальні подробиці лише на нашому каналі…» чи демонстрували провокативні фото в соцмережах? Згадай, а ми тобі розкажемо, як розпізнавати маніпуляції так швидко, як той сірко муху їсть!</p>
+                          </div>
+                        </div>
+                        <div class="swiper-slide">
+                          <div id="w-node-c7c06a55-789a-5c0b-adc5-c0af5c2ead7c-33982cba" class="feature-card"><img loading="lazy" src="images/slide-4.png" alt="" class="slider-img">
+                            <div class="spacer-small"></div>
+                            <h4 class="h4-heading-style">Факти та судження</h4>
+                            <div class="spacer-xsmall"></div>
+                            <p class="paragraph-slide">Ця кімнатка здається простенькою. А ти її досліди та поміркуй: наше твердження — факт чи лишень судження. Тут як з котами. Пам&#x27;ятаєш історію про те, що коти мають дев&#x27;ять життів? Інтерактивні картки підкажуть тобі, чи варто довіряти усьому, що говорять.</p>
+                          </div>
+                        </div>
+                        <div class="swiper-slide">
+                          <div id="w-node-c7c06a55-789a-5c0b-adc5-c0af5c2ead8a-33982cba" class="feature-card"><img loading="lazy" src="images/slide-5.png" alt="" class="slider-img">
+                            <div class="spacer-small"></div>
+                            <h3 class="h4-heading-style">Пропаганда</h3>
+                            <div class="spacer-xsmall"></div>
+                            <p class="paragraph-slide">&quot;Ти нічого не зміниш, хоч гопки скачи!&quot; – Чи має вплив на мислення людини такий наратив? Пропагандисти вміють знайти ниточки, за які треба смикати, щоб впливати на вигідну для себе поведінку людей. З нами ти навчишся їх відрізати!</p>
+                          </div>
+                        </div>
+                        <div class="swiper-slide">
+                          <div id="w-node-c7c06a55-789a-5c0b-adc5-c0af5c2ead98-33982cba" class="feature-card"><img loading="lazy" src="images/slide-6.png" alt="" class="slider-img">
+                            <div class="spacer-small"></div>
+                            <h4 class="h4-heading-style">Популізм</h4>
+                            <div class="spacer-xsmall"></div>
+                            <p class="paragraph-slide">Всемурляндське котоопитування оприлюднило результати на сайті, який утримує лідер цього ж опитування. Ти повіриш достовірності такого екзит-полу? Про псевдо-рейтинги та політичний популізм ми розкажимо щойно ти завітаєш до цієї кімнати.</p>
+                          </div>
+                        </div>
+                        <div class="swiper-slide">
+                          <div id="w-node-_54bd5ff2-115a-3ec8-d95a-514883e2ae9d-33982cba" class="feature-card"><img loading="lazy" src="images/slide-7.png" alt="" class="slider-img">
+                            <div class="spacer-small"></div>
+                            <h4 class="h4-heading-style">Фейкові акаунти</h4>
+                            <div class="spacer-xsmall"></div>
+                            <p class="paragraph-slide">За фейковими акаунтами стоять не лише роботи. По той бік екрану тобі може відповідати цілком реальна людина, що провокує, маніпулює, намагається чинити будь-який психологічний тиск для досягнення своєї вигоди чи того, на кого вона працює. У цій кімнаті ти навчишся реагувати на ботів та тролів без шкоди своєму ментальному здоров&#x27;ю.</p>
+                          </div>
+                        </div>
+                        <div class="swiper-slide">
+                          <div id="w-node-c94efbb8-c879-19e2-d86c-9f3751c88143-33982cba" class="feature-card"><img loading="lazy" src="images/slide-8.png" alt="" class="slider-img">
+                            <div class="spacer-small"></div>
+                            <h4 class="h4-heading-style">Алгоритми та інформаційна бульбашка</h4>
+                            <div class="spacer-xsmall"></div>
+                            <p class="paragraph-slide">На відміну від мильної бульбашки, інформаційну бульку важко лопнути. Її наполегливо формують алгоритми у соцмережах. Завітай до цієї кімнати, щоб навчитися самостійно обирати контент, який хочеш дивитися ти, а не фільтри твоїх соцмереж.</p>
+                          </div>
+                        </div>
+                        <div class="swiper-slide">
+                          <div id="w-node-_86640f81-d99d-8525-03fd-6ea16fbad1cf-33982cba" class="feature-card"><img loading="lazy" src="images/slide-9.png" alt="" class="slider-img">
+                            <div class="spacer-small"></div>
+                            <h4 class="h4-heading-style">Стереотипи</h4>
+                            <div class="spacer-xsmall"></div>
+                            <p class="paragraph-slide">Чи може хороша вчителька мати татуювання дракона? А чи вилікує тебе лікар, який у вільний час бере участь у автоперегонах та обожнює готувати? Імовірно, що так. Бо не можна спрощувати ставлення до людини, допоки не дізнаєшся про неї більше. Саме ти визначаєш, куди рухатися від стереотипу, вгору чи вниз.</p>
+                          </div>
+                        </div>
+                        <div class="swiper-slide">
+                          <div id="w-node-_73f0dc3f-76f0-ab87-3be5-c2a08c9381ec-33982cba" class="feature-card"><img loading="lazy" src="images/slide-10.png" alt="" class="slider-img">
+                            <div class="spacer-small"></div>
+                            <h4 class="h4-heading-style">Підсумки і Рефлексія</h4>
+                            <div class="spacer-xsmall"></div>
+                            <p class="paragraph-slide">Уяви, що твій розпорядок дня - це медіаграмотна рутина. А ти, як медіаграмотна людина, можеш визначати її якісний склад:) У цій кімнаті повтори основні тези з дев&#x27;яти попередніх кімнат та пройди тестування від кота і говірливої пір&#x27;їстої фактчекерки.</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="bg-turquoise">
+        <div class="section-certified">
+          <div class="padding-global">
+            <div class="container-large">
+              <div class="hero_component">
+                <div class="w-layout-grid hero_content"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="bg-white">
+        <div class="section-image">
+          <div class="padding-global">
+            <div class="container-large max-w">
+              <div class="hero_component max-h"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="bg-blue-large">
+        <div class="section-info">
+          <div class="section-info_bg"></div>
+          <div class="padding-global">
+            <div class="container-large">
+              <div class="hero_component info">
+                <div class="w-layout-grid hero_content"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="bg-dark_blue padding">
+        <div class="section-form">
+          <div class="section_bg"></div>
+          <div class="padding-global">
+            <div class="container-large form">
+              <div class="hero_component form">
+                <a href="#" class="btn-form cursor-style w-button"></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="bg-dark_blue mark">
+        <div class="section-mark">
+          <div class="bg-mark-block">
+            <div class="section-mark_bg"></div>
+            <div class="padding-global">
+              <div class="container-large form">
+                <div class="hero_component mark"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="bg-dark_blue">
+        <div class="footer">
+          <div class="section-footer">
+            <div class="padding-global">
+              <div class="container-large">
+                <div class="hero_component footer">
+                  <div class="w-layout-grid hero_content footer">
+                    <div class="logo-wrapper">
+                      <div class="logo-element"><img src="images/logo-usaid-b.svg" loading="lazy" alt="" class="logo-img"></div>
+                      <div class="logo-element"><img loading="lazy" src="images/logo-dos_seal.svg" alt="" class="logo-img"></div>
+                      <div class="logo-element"><img loading="lazy" src="images/logo-irex-b.svg" alt="" class="logo-img"></div>
+                      <div class="logo-element"><img loading="lazy" src="images/logo-l2d-ed.png" alt="" class="logo-img"></div>
+                    </div>
+                    <div class="footer-heading">
+                      <h4 class="h4-m-700-22-30-w">Цифровий лабіринт медіаграмотності «НЕ ВІРРР — ПЕРЕВІРРР» створено в межах програми «Мріємо та діємо», яка впроваджується за фінансової підтримки Агентства США з міжнародного розвитку (USAID) та виконується IREX.</h4>
+                      <p class="p-subheading">У Цифровому лабіринті використані матеріали, розроблені в межах проєкту «Вивчай та розрізняй: інфо-медійна грамотність», який виконується IREX за підтримки Посольства США в Україні.</p>
+                      <p class="p-subheading">Ця сторінка стала можливою завдяки щирій підтримці американського народу через Агентство США з міжнародного розвитку (USAID). Зміст цієї сторінки є відповідальністю IREX і не обов’язково відображає погляди USAID чи Уряду Сполучених Штатів Америки.</p>
+                    </div>
+                    <div class="footer-text">
+                      <p class="paragraph-white">
+                        <a href="https://mriemotadiemorazom.org/" target="_blank" class="link-span cursor-style">Програма USAID «Мріємо та діємо»</a> підтримує молодіжні інновації та підприємництво, сприяє активній участі молоді у прийнятті рішень та залученню молоді до вирішення проблем на національному та місцевому рівнях. Створюючи сприятливе середовище та відновлюючи доступ до формальних і неформальних освітніх можливостей, програма підсилює молодь на шляху реалізації мрій, ідей та дій спрямованих на демократичне та європейське майбутнє України.
+                      </p>
+                      <p class="paragraph-white">Сторінки програми в соцмережах: <a href="https://www.facebook.com/mriemotadiemo" target="_blank" class="link-span cursor-style">Facebook</a> та <a href="https://www.instagram.com/mriemotadiemo/?hl=en" target="_blank" class="link-span cursor-style">Instagram.</a>
+                      </p>
+                    </div>
+                  </div>
+                  <div class="footer-links">
+                    <div class="navbar_menu-links is-tablet footer">
+                      <a href="#" class="button-link cursor-style footer w-inline-block">
+                        <div class="m-text-link color capitalize white">ПРО ЛАБІРИНТ</div>
+                      </a>
+                      <a href="#" class="button-link cursor-style footer w-inline-block">
+                        <div class="m-text-link color capitalize white">про кімнати</div>
+                      </a>
+                      <a href="#" class="button-link cursor-style footer w-inline-block">
+                        <div class="m-text-link color capitalize white">кімнати</div>
+                      </a>
+                      <a href="#" class="button-link cursor-style footer w-inline-block">
+                        <div class="m-text-link color capitalize white">аудіогід</div>
+                      </a>
+                    </div>
+                    <div class="copyright-block-f">
+                      <div class="m-400-14-17-w">Copyright ©</div>
+                      <div class="m-400-14-17-w">IREX, 2025</div>
+                      <div class="m-400-14-17-w">ALL RIGHTS RESERVED</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="svg-element w-embed"><svg xmlns="http://www.w3.org/2000/svg" width="237" height="252" viewbox="0 0 237 252" fill="none">
+              <path d="M86.6326 70.4623C84.5008 67.9055 81.8342 65.8292 78.6162 64.962C77.5748 61.5217 76.7744 57.9796 76.0597 54.4864C75.635 52.4141 74.7407 48.298 77.5176 47.4308C80.3967 46.5351 81.8872 51.5225 82.5325 53.432C83.3084 55.7323 83.5167 58.2524 84.1496 60.5934C84.4151 61.5705 84.6805 62.6413 84.848 63.7161C85.3135 62.0306 86.0731 60.3695 86.5468 58.741C87.3921 55.8585 88.1966 52.5811 90.2875 50.3174C91.2799 49.2466 93.2115 49.6497 93.6198 51.0787C94.2896 53.4157 93.6076 55.8218 93.0236 58.114C92.5376 60.0275 92.0108 61.9207 91.5004 63.8179C91.529 63.7976 91.5576 63.7853 91.5902 63.765C91.5535 63.9116 91.5167 64.0581 91.5004 64.2128C91.484 64.3146 91.5004 64.396 91.533 64.4653C89.7444 65.9757 87.9924 67.6897 88.2538 69.7743C88.7193 73.5402 94.7143 70.3402 96.2253 69.3956C96.7031 69.0944 96.2375 68.3574 95.7638 68.6587C94.4243 69.4974 92.799 70.5152 91.1818 70.6292C88.3355 70.8247 89.0542 68.4959 90.2467 67.1238C90.6877 66.6108 91.1737 66.1426 91.6719 65.6867C91.8067 65.7925 91.9863 65.8332 92.1415 65.7029C93.0032 65.0027 93.9098 64.3757 94.8286 63.7609C95.0941 63.6347 95.3554 63.5085 95.6168 63.3741C96.8868 63.8016 97.9486 64.6648 97.9527 65.9106C97.9854 66.0856 97.9935 66.2648 97.9772 66.4439C98.1691 67.6816 97.5035 68.7971 97.2911 70.1855C97.14 71.1585 97.0012 72.099 96.7072 73.0395C96.4744 73.7886 96.1232 74.5459 96.164 75.3398C96.1844 75.751 96.0905 76.093 95.9312 76.378C95.9272 76.439 95.9272 76.496 95.919 76.553C95.4249 81.4997 96.6581 87.6311 98.1977 92.4434C98.6224 93.7706 99.1451 95.0653 99.6679 96.3559C99.7536 96.5717 100.374 98.0455 100.619 98.6725L109.971 103.562C108.264 102.671 110.31 103.253 111.143 103.265C110.996 103.265 113.973 102.87 113.814 102.988C114.349 102.809 114.639 102.723 114.688 102.74C115.145 102.467 115.599 102.186 116.027 101.877C118.073 100.501 119.756 98.6766 121.924 97.4796C124.166 96.246 123.239 96.075 125.71 94.5971C126.061 94.3732 126.429 94.1859 126.796 93.9905C129.618 90.3955 134.441 88.4576 139.689 91.2016L140.154 91.4459C146.725 94.8821 147.19 102.752 142.992 108.146C141.82 109.653 140.228 110.834 138.578 111.786C138.178 112.022 137.924 112.165 137.806 112.218C136.728 113.203 135.429 114.139 134.237 114.946C131.313 116.916 128.569 119.282 125.526 121.073C116.673 126.284 105.528 125.27 96.7888 120.702C92.9297 118.683 88.507 116.932 85.3789 113.838C81.9893 110.483 80.511 105.724 78.7714 101.408C75.096 92.2887 74.0873 81.7399 75.0551 72.0257C75.3083 69.4771 76.803 67.3844 78.8367 65.9269C81.2624 66.676 83.435 68.158 85.1379 70.0552C86.1303 71.1585 86.9307 72.3392 87.7352 73.5728C88.0659 74.0817 88.4702 74.6476 88.6418 75.2339C88.5029 76.5571 88.0496 76.9968 87.2819 76.5571C87.0246 76.4187 86.7837 76.2599 86.5468 76.097C85.2359 73.3733 82.8388 71.2847 80.5437 69.3712C80.1067 69.0089 79.5677 69.5951 79.9475 70.0063C80.5927 70.7066 83.3696 74.6802 85.8362 76.6467C85.8648 76.7077 85.8893 76.7729 85.9179 76.838C83.047 76.895 80.6458 73.9392 78.5427 72.327C78.0975 71.9891 77.5013 72.6242 77.9464 72.9662C80.3763 74.8268 83.1532 78.2385 86.5795 77.6523C86.7387 77.6238 86.8776 77.5261 86.947 77.3917C87.9557 77.9251 88.8378 77.9251 89.385 76.9439C90.4958 74.9489 87.8046 71.8547 86.6407 70.4623H86.6326Z" fill="#FBB616"></path>
+              <path d="M160.434 125.788L222.674 166.977C222.674 166.977 219.995 185.701 203.358 190.518C186.725 195.33 150.772 195.867 128.777 186.772L109.996 236.524L67.6064 221.008L92.2926 155.744L60.0923 190.518L26.822 166.977L69.7503 123.65L152.389 121.513L160.438 125.792L160.434 125.788Z" fill="#231F20"></path>
+              <path d="M214.09 73.8989C214.09 73.8989 233.406 91.0188 236.628 124.721C239.85 158.424 221.065 173.402 221.065 173.402L152.385 121.513L138.48 75.617L214.09 73.8989Z" fill="#37B34A"></path>
+              <path d="M174.78 162.165L104.785 163.484L32.229 126.109L100.754 125.254L174.78 162.165Z" fill="#80767F"></path>
+              <path d="M32.282 125.991L104.719 163.439L80.5763 96.0384L8.13892 58.5903L32.282 125.991Z" fill="#D3D4D6"></path>
+              <path d="M41.9198 112.483L64.2537 124.029L56.8091 103.245L34.4751 91.7026L41.9198 112.483Z" fill="#A8AAAC"></path>
+              <path d="M138.484 75.6128L111.874 99.4382L130.921 119.905L154.533 102.785L138.484 75.6128Z" fill="#37B34A"></path>
+              <path d="M213.286 73.3612C213.286 73.3612 192.087 81.2311 175.454 80.5837C154.798 79.7817 138.48 75.6126 138.48 75.6126C138.48 75.6126 129.589 31.8093 151.295 0L163.064 22.4249H191.834C191.834 22.4249 202.292 4.17311 218.247 1.3069C218.247 1.3069 210.145 52.2432 213.286 73.3653V73.3612Z" fill="#FBB616"></path>
+              <path d="M147.554 42.761C147.554 45.6883 151.846 48.0619 157.142 48.0619C162.439 48.0619 166.731 45.6883 166.731 42.761C166.731 39.8296 162.439 37.4561 157.142 37.4561C151.846 37.4561 147.554 39.8296 147.554 42.761Z" fill="#F4F5F5"></path>
+              <path d="M176.834 46.5838L169.863 46.4087L167.033 54.1157C167.033 54.1157 171.868 59.7097 179.713 54.2338L176.834 46.5838Z" fill="#F4F5F5"></path>
+              <path d="M170.096 21.2075L170.117 33.8082H171.856L173.363 20.9917L170.096 21.2075Z" fill="#37B34A"></path>
+              <path d="M177.067 20.9918L174.319 29.4398L180.991 20.772L177.067 20.9918Z" fill="#37B34A"></path>
+              <path d="M183.172 20.772L175.564 33.5926H177.524L186.218 20.772H183.172Z" fill="#37B34A"></path>
+              <path d="M152.426 42.7612C152.426 45.5419 154.688 47.8015 157.481 47.8015C160.275 47.8015 162.537 45.546 162.537 42.7612C162.537 39.9764 160.271 37.7168 157.481 37.7168C154.688 37.7168 152.426 39.9723 152.426 42.7612Z" fill="#37B34A"></path>
+              <path d="M157.71 37.7451C157.71 37.7451 161.949 41.963 157.391 47.7606C157.391 47.7606 152.454 41.2383 157.71 37.7451Z" fill="#231F20"></path>
+              <path d="M181.42 42.761C181.42 45.6883 185.712 48.0619 191.009 48.0619C196.305 48.0619 200.602 45.6883 200.602 42.761C200.602 39.8296 196.309 37.4561 191.009 37.4561C185.708 37.4561 181.42 39.8296 181.42 42.761Z" fill="#F4F5F5"></path>
+              <path d="M186.292 42.7612C186.292 45.5419 188.555 47.8015 191.344 47.8015C194.137 47.8015 196.404 45.546 196.404 42.7612C196.404 39.9764 194.137 37.7168 191.344 37.7168C188.555 37.7168 186.292 39.9723 186.292 42.7612Z" fill="#37B34A"></path>
+              <path d="M191.573 37.7451C191.573 37.7451 195.811 41.963 191.258 47.7606C191.258 47.7606 186.321 41.2383 191.573 37.7451Z" fill="#231F20"></path>
+              <path d="M158.621 22.7709H145.892L152.516 21.5536L146.762 16.1672L154.084 20.5113L149.902 12.3442C149.902 12.3442 156.873 16.1672 158.621 22.7709Z" fill="#37B34A"></path>
+              <path d="M196.383 22.6082L211.665 22.8403L204.865 21.623L208.7 16.7537L203.297 19.8845L205.041 11.7134L196.383 22.6082Z" fill="#37B34A"></path>
+              <path d="M173.661 48.2776C174.037 49.8125 175.426 50.9525 177.084 50.9525C177.7 50.9525 178.284 50.7937 178.786 50.5128L179.019 51.27C178.435 51.5632 177.782 51.7301 177.084 51.7301C174.735 51.7301 172.824 49.8491 172.775 47.5244L173.665 48.2735L173.661 48.2776Z" fill="#37B34A"></path>
+              <path d="M173.069 48.2776C172.693 49.8125 171.305 50.9525 169.647 50.9525C169.03 50.9525 168.446 50.7937 167.94 50.5128L167.707 51.27C168.287 51.5632 168.944 51.7301 169.643 51.7301C171.987 51.7301 173.898 49.8491 173.951 47.5244L173.061 48.2735L173.069 48.2776Z" fill="#37B34A"></path>
+              <path d="M175.437 45.3708L173.522 49.3648L170.733 45.3708C173.698 43.2863 175.437 45.3708 175.437 45.3708Z" fill="#231F20"></path>
+              <path d="M137.242 33.6415V37.7291C137.242 37.7291 139.496 38.6493 139.705 41.8127C139.909 44.9761 140.215 56.7219 153.226 56.3147C166.237 55.9076 169.206 46.9181 171.154 39.0523C171.154 39.0523 171.154 37.3179 173.302 37.3179C175.454 37.3179 175.764 39.5653 175.764 39.5653C175.764 39.5653 176.834 42.745 178.427 46.2056C180.661 51.0546 183.344 56.726 193.998 56.1112C205.469 55.4516 206.192 46.3074 206.498 44.7725C206.809 43.2417 206.6 38.6452 209.161 37.9286C209.161 37.9286 209.982 37.2162 209.676 33.4339C209.676 33.4339 202.913 31.3942 192.36 31.8013C181.808 32.2084 176.483 36.0925 173.204 35.6813C169.924 35.2741 162.753 32.0049 154.455 31.9031C146.157 31.8013 137.246 33.6415 137.246 33.6415H137.242ZM178.835 38.6452C179.346 34.354 187.337 33.9713 192.765 33.6415C204.546 32.925 205.163 37.3179 204.546 43.5471C203.934 49.7762 203.628 54.2709 192.458 54.6781C181.294 55.0893 178.316 42.9323 178.835 38.6452ZM142.057 41.4015C142.057 33.0268 147.995 33.385 156.293 33.5398C161.928 33.6415 169.202 33.9469 167.666 41.7068C166.127 49.4708 162.133 55.187 153.014 54.8816C143.899 54.5722 142.053 49.7721 142.053 41.4015H142.057Z" fill="#231F20"></path>
+              <path d="M106.239 234.647L102.212 251.502L45.0684 234.248C45.0684 234.248 59.9536 221.411 76.8562 224.623L106.235 234.651L106.239 234.647Z" fill="#FBB616"></path>
+              <path d="M55.5348 187.704L43.0549 201.347L0 169.652C0 169.652 23.7388 166.839 33.8052 172.457L55.5348 187.704Z" fill="#FBB616"></path>
+              <path d="M106.239 234.647C106.239 234.647 89.871 234.118 83.7004 245.615L102.212 251.502L106.239 234.647Z" fill="white"></path>
+              <path d="M55.5349 187.704L43.055 201.347L27.3652 189.98C27.3652 189.98 43.4593 181.418 55.5349 187.704Z" fill="white"></path>
+              <path d="M162.904 116.965C162.676 120.886 165.151 123.239 169.087 122.742C170.092 124.127 171.395 125.153 173.338 125.389C173.882 125.32 174.425 125.234 174.968 125.153C174.952 125.153 174.939 125.153 174.923 125.153C176.516 124.847 177.287 123.874 178.096 122.938C178.782 123.703 179.717 124.167 180.824 124.42C182.09 124.159 183.352 123.785 184.618 123.663C185.651 122.966 186.21 121.887 186.872 120.894C190.788 120.528 192.65 117.702 191.63 113.895C193.97 112.666 194.582 108.037 192.32 105.993C192.842 105.183 193.177 104.23 193.161 103.167C193.116 100.855 191.421 99.2264 190.012 98.4C190.208 94.463 187.725 92.122 183.736 92.639C182.874 91.1733 181.506 90.3224 179.709 90.0049L177.271 90.2288H177.214C177.475 90.2207 177.737 90.2125 177.994 90.2166C177.075 90.4364 176.168 90.9128 175.658 91.4013C175.454 91.5968 175.086 92.4192 174.817 92.4314C174.674 92.4395 173.865 91.6456 173.784 91.5927C173.175 91.2222 172.391 90.9942 171.554 90.8436L169.749 91.0879C167.703 91.5601 166.951 93.0828 166.041 94.4711C162.153 94.8498 160.221 97.6508 161.283 101.474C158.951 102.671 158.302 107.377 160.593 109.376C158.617 111.831 160.52 116.078 162.9 116.965H162.904ZM178.067 112.658C182.515 112.609 185.238 111.168 185.606 107.821L190.474 107.316C192.638 108.607 191.548 112.271 189.339 112.719C189.204 112.983 189.183 113.334 189.049 113.598C190.641 115.524 189.718 118.671 186.945 118.818C186.68 117.702 186.251 116.794 185.704 116.021C186.153 115.276 186.382 114.351 186.251 113.134C185.594 113.256 184.695 113.183 184.201 113.443C184.173 115.243 183.209 116.285 181.522 116.741C181.645 117.356 181.555 118.244 181.82 118.691C183.041 118.761 183.691 117.934 184.385 117.857C185.557 120.291 183.928 122.714 181.265 122.425C177.941 122.062 178.513 116.363 178.072 112.662L178.067 112.658ZM176.181 95.4971C176.181 93.9785 176.973 92.8955 178.116 92.2767C181.016 91.5805 182.69 93.6487 182.123 96.2014C181.224 96.0427 180.563 95.5867 179.342 95.8309L179.554 97.8829C181.518 97.7526 182.384 98.974 182.952 100.55C183.572 100.423 184.463 100.517 184.912 100.252C184.802 99.0188 184.275 98.2982 183.776 97.5368C184.169 96.7714 184.467 95.9327 184.34 94.7439C187.309 94.1332 188.648 97.1867 187.57 99.4096C187.762 99.6254 187.913 99.8982 188.032 100.212C190.376 100.008 191.911 103.383 190.347 105.158C189.249 105.394 186.896 105.7 185.479 105.663C184.965 104.788 184.536 103.803 183.719 103.298C183.38 103.937 182.727 104.32 182.482 105.028C183.062 105.468 183.433 106.07 183.527 106.901C183.85 109.669 181.171 110.528 177.757 110.52C177.618 105.879 176.193 99.943 176.189 95.493L176.181 95.4971ZM162.578 110.211L167.54 109.694C167.874 110.756 168.442 111.538 169.206 112.071C169.541 111.432 170.194 111.05 170.447 110.337C169.818 109.8 169.52 109.348 169.406 108.558C168.997 105.659 171.75 104.869 175.074 104.857L175.903 112.792C176.438 117.906 178.235 123.268 173.114 123.268C171.582 122.93 170.186 121.26 170.802 119.265C171.513 119.217 172.362 119.864 173.575 119.546L173.363 117.49C171.386 117.633 170.488 116.46 169.961 114.824C169.34 114.95 168.45 114.856 168.005 115.121C168.083 116.395 168.634 117.087 169.14 117.836C168.752 118.602 168.418 119.416 168.581 120.629C165.894 121.354 164.105 118.248 165.351 115.968C165.126 115.785 165.028 115.447 164.889 115.166C162.533 115.398 160.993 111.974 162.574 110.219L162.578 110.211ZM162.071 103.562C162.541 103.11 163.109 103.086 163.586 102.65C163.717 102.386 163.738 102.036 163.876 101.771C162.182 99.8982 163.346 96.5027 165.988 96.6452C166.257 97.72 166.645 98.6442 167.217 99.3486C166.772 100.098 166.523 101.01 166.666 102.235C167.323 102.113 168.226 102.186 168.712 101.93C168.699 100.094 169.753 99.1206 171.399 98.632C171.268 98.0172 171.366 97.1256 171.096 96.6819C169.904 96.7144 169.332 97.2478 168.548 97.606C167.54 95.5745 168.516 93.551 170.251 93.0909C174.972 91.837 174.216 98.4 174.849 102.707C170.235 102.679 167.805 104.413 167.123 107.565C165.763 107.866 163.742 108.061 162.349 108.061C160.989 107.121 160.895 104.694 162.067 103.562H162.071Z" fill="#F4F5F5"></path>
+              <path d="M146.214 154.938C142.8 154.812 139.223 155.032 135.854 154.393C131.978 153.652 129.638 152.093 126.763 149.528C125.432 148.339 123.986 147.252 122.267 146.67C121.083 146.275 118.706 146.148 117.293 145.249C117.048 144.491 116.848 143.697 116.766 142.822C119.948 142.769 123.26 143.343 126.363 143.706C127.392 143.828 127.384 142.224 126.363 142.102C123.243 141.735 119.907 141.161 116.709 141.218V140.766C116.709 140.196 116.766 139.651 116.848 139.121C118.482 138.735 120.401 138.796 121.941 138.726C123.239 138.669 124.534 138.665 125.832 138.629C126.865 138.596 126.874 136.996 125.832 137.029C123.394 137.094 120.47 136.886 117.832 137.285C120.319 134.826 123.656 133.478 128.242 133.478C133.526 133.483 138.733 133.873 143.985 133.206C151.45 133.202 159.801 130.848 164.616 127.726C173.837 121.753 181.204 108.208 193.173 107.87C206.535 107.491 207.577 126.427 196.399 129.818C196.228 129.957 196.06 130.087 195.832 130.258C194.586 130.942 193.565 131.85 192.761 132.99C190.037 135.697 187.195 138.242 184.234 140.689C177.994 145.863 172.04 150.252 164.019 152.162C158.38 153.509 152.401 154.637 146.418 154.999C146.353 154.983 146.296 154.951 146.214 154.947V154.938Z" fill="#FBB616"></path>
+              <path d="M201.749 87.8061L176.262 112.275L201.21 132.741L224.283 105.459C224.283 105.459 222.139 73.361 201.745 87.8061H201.749Z" fill="#0E6A3E"></path>
+              <path d="M130.921 119.905L111.874 99.438L115.517 96.7998L132.934 118.87L130.921 119.905Z" fill="#0E6A3E"></path>
+              <path d="M59.2633 191.23L26.822 166.973L29.8685 163.37L62.5303 187.611L59.2633 191.23Z" fill="#0E6A3E"></path>
+              <path d="M109.991 236.52L67.6021 221.008L69.064 217.641L111.523 233.564L109.991 236.52Z" fill="#0E6A3E"></path>
+              <path d="M191.021 159.376L178.186 174.147L180.82 175.787L192.667 161.342L191.021 159.376Z" fill="#0E6A3E"></path>
+              <path d="M180.24 144.455C180.608 144.206 180.975 143.958 181.343 143.705C181.739 143.437 182.11 143.123 182.494 142.842L222.956 171.517L219.991 174.802L180.138 144.528C180.175 144.499 180.211 144.475 180.24 144.455Z" fill="#0E6A3E"></path>
+              <path d="M161.385 130.287L150.857 122.29L152.385 121.509L163.292 129.24C162.606 129.509 161.965 129.859 161.385 130.287Z" fill="#0E6A3E"></path>
+            </svg></div>
+          <div class="footer-indent"></div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script src="https://d3e54v103j8qbb.cloudfront.net/js/jquery-3.5.1.min.dc5e7f18c8.js?site=656660cb808a92be1eef2a99" type="text/javascript" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+  <script src="js/webflow.js" type="text/javascript"></script>
+  <script type="module">
+// Імпорт функцій Firebase
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js';
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js';
+import { getFirestore, doc, setDoc, updateDoc, collection, getDocs, getDoc } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js';
+// Конфігурація Firebase
+window.firebaseConfig = {
+  apiKey: "AIzaSyCDjRPuXKmQiSLcjdgYG-XW_jGlQ4i4isE",
+  authDomain: "media-labirint.firebaseapp.com",
+  projectId: "media-labirint",
+  storageBucket: "media-labirint.firebasestorage.app",
+  messagingSenderId: "1039335001528",
+  appId: "1:1039335001528:web:a3c4c26916d4f50170534d",
+  measurementId: "G-7L4GDB8H1Z"
+};
+// Налаштування кімнат
+const roomsConfig = {
+  room1: 1,
+  room2: 5,
+  room3: 3,
+  room4: 11,
+  room5: 6,
+  room6: 1,
+  room7: 7,
+  room8: 2,
+  room9: 2,
+  room10: 2
+};
+// Ініціалізація Firebase
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+// Функція для реєстрації користувача
+function handleSignUp(e) {
+  e.preventDefault();
+  e.stopPropagation();
+  const email = document.getElementById('signup-email').value;
+  const password = document.getElementById('signup-password').value;
+  const age = document.getElementById('age').value;
+  createUserWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      // Успішна реєстрація
+      const user = userCredential.user;
+      window.userUID = user.uid;
+      localStorage.setItem('UID', user.uid);
+      initializeUserRooms(user.uid, "name", email, age);
+    })
+    .catch((error) => {
+      const errorMessage = error.message;
+      const errorText = document.getElementById('signup-error-message');
+      if (errorText) {
+        errorText.innerHTML = errorMessage;
+      }
+    });
+}
+// Функція для входу
+function handleSignIn(e) {
+  e.preventDefault();
+  e.stopPropagation();
+  const email = document.getElementById('login-email').value;
+  const password = document.getElementById('login-password').value;
+  signInWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      // Успішний вхід
+      const user = userCredential.user;
+      window.userUID = user.uid;
+      localStorage.setItem('UID', user.uid);
+    })
+    .catch((error) => {
+      const errorMessage = error.message;
+      const errorText = document.getElementById('signin-error-message');
+      if (errorText) {
+        errorText.innerHTML = errorMessage;
+      }
+    });
+}
+window.fetchData = async function() {
+  // Отримуємо всі документи з колекції 'users'
+  const usersCollectionRef = collection(db, "users"); // Замість db.collection
+  const usersSnapshot = await getDocs(usersCollectionRef); // Замість db.collection().get()
+  const usersData = usersSnapshot.docs.map(doc => doc.data()); // Отримуємо дані з кожного документу
+  // Лог для перевірки даних
+  console.log(usersData);
+  // Створюємо об'єкти для підрахунку кількості людей за віковими групами та статусами кімнат
+  const ageGroups = {
+    "0-10": 0,
+    "11-16": 0,
+    "17-25": 0,
+    "26-35": 0,
+    "36-45": 0,
+    "46-59": 0,
+    "60+": 0
+  };
+  const roomsData = {};
+  // Перебираємо кожного користувача
+  usersData.forEach(user => {
+    const age = user.age;
+    // Підраховуємо вікові групи
+    if (age <= 10) {
+      ageGroups["0-10"]++;
+    } else if (age >= 11 && age <= 16) {
+      ageGroups["11-16"]++;
+    } else if (age >= 17 && age <= 25) {
+      ageGroups["17-25"]++;
+    } else if (age >= 26 && age <= 35) {
+      ageGroups["26-35"]++;
+    } else if (age >= 36 && age <= 45) {
+      ageGroups["36-45"]++;
+    } else if (age >= 46 && age <= 59) {
+      ageGroups["46-59"]++;
+    } else if (age >= 60) {
+      ageGroups["60+"]++;
+    }
+    // Обробляємо кімнати для кожного користувача
+    const rooms = user.rooms;
+    Object.keys(rooms).forEach(roomName => {
+      const roomStatus = rooms[roomName].status;
+      // Ініціалізуємо об'єкт для кожної кімнати
+      if (!roomsData[roomName]) {
+        roomsData[roomName] = { notStarted: 0, inProgress: 0, passed: 0, failed: 0 };
+      }
+      // Підраховуємо статуси для кожної кімнати
+      if (roomStatus === 'not started') {
+        roomsData[roomName].notStarted += 1;
+      } else if (roomStatus === 'in progress') {
+        roomsData[roomName].inProgress += 1;
+      } else if (roomStatus === 'passed') {
+        roomsData[roomName].passed += 1;
+      } else if (roomStatus === 'failed') {
+        roomsData[roomName].failed += 1;  // Виправлено з "passed" на "failed"
+      }
+    });
+  });
+  // Повертаємо об'єкт з віковими групами та даними по кімнатах
+  return { ageGroups, roomsData };
+};
+// Функція для виходу
+function handleSignOut() {
+  signOut(auth).then(() => {
+    console.log('User signed out');
+  }).catch((error) => {
+    console.log(error.message);
+  });
+}
+// Відслідковування стану авторизації
+onAuthStateChanged(auth, (user) => {
+  let publicElements = document.querySelectorAll("[data-onlogin='hide']");
+  let privateElements = document.querySelectorAll("[data-onlogin='show']");
+  if (user) {
+    // Користувач авторизований
+    const uid = user.uid;
+    privateElements.forEach((element) => {
+      element.style.display = "initial";
+    });
+    publicElements.forEach((element) => {
+      element.style.display = "none";
+    });
+  } else {
+    // Користувач не авторизований
+    publicElements.forEach((element) => {
+      element.style.display = "initial";
+    });
+    privateElements.forEach((element) => {
+      element.style.display = "none";
+    });
+  }
+});
+// Функція ініціалізації даних користувача
+async function initializeUserRooms(userId, username, email, age) {
+  const userDocRef = doc(db, "users", userId);
+  const userAge = Number(age);
+  if (isNaN(userAge)) {
+    throw new Error("Age must be a valid number.");
+  }
+  // Створення структури для даних користувача
+  const userData = {
+    name: username, 
+    email: email, 
+    age: userAge,
+    rooms: {} // Дані по кімнатах
+  };
+  // Створюємо об'єкт rooms з результатами для кожної кімнати
+  for (const [roomName, interactiveCount] of Object.entries(roomsConfig)) {
+    const roomData = {};
+    for (let i = 1; i <= interactiveCount; i++) {
+      roomData[`interactive${i}`] = ""; // Порожнє значення для кожного інтерактиву
+    }
+	roomData.status = "not started"; 
+    userData.rooms[roomName] = roomData;
+  }
+  // Зберігаємо документ користувача в Firestore
+  await setDoc(userDocRef, userData);
+  console.log(`User data initialized for ${userId}`);
+}
+window.fetchInteractiveData = async function () {
+    // Отримуємо всіх користувачів
+    const usersSnapshot = await getDocs(collection(db, "users"));
+    // Мапа для зберігання даних по інтерактивах
+    const interactiveData = {};
+    // Проходимо кожного користувача
+    usersSnapshot.forEach(doc => {
+        const userData = doc.data();
+        // Для кожної кімнати користувача
+        Object.keys(userData.rooms).forEach(roomName => {
+            const roomData = userData.rooms[roomName];
+            // Для кожного інтерактиву в кімнаті
+            Object.keys(roomData).forEach(interactive => {
+                if (interactive.startsWith('interactive')) {
+                    const status = roomData[interactive]; // Статус інтерактиву: 'pass', 'fail' або ""
+                    // Ініціалізація даних для інтерактиву в кімнаті, якщо їх ще немає
+                    if (!interactiveData[roomName]) {
+                        interactiveData[roomName] = {};
+                    }
+                    if (!interactiveData[roomName][interactive]) {
+                        interactiveData[roomName][interactive] = { pass: 0, fail: 0, notStarted: 0 };
+                    }
+                    // Підраховуємо кількість статусів
+                    if (status === 'passed') {
+                        interactiveData[roomName][interactive].pass++;
+                    } else if (status === 'failed') {
+                        interactiveData[roomName][interactive].fail++;
+                    } else {
+                        interactiveData[roomName][interactive].notStarted++;
+                    }
+                }
+            });
+        });
+    });
+    return interactiveData;  
+}
+// Функція для перевірки статусу кімнати
+async function updateRoomStatus(userId, room) {
+  const userDocRef = doc(db, "users", userId);
+  const userDocSnap = await getDoc(userDocRef);
+  if (!userDocSnap.exists()) {
+    console.log("User document not found");
+    return;
+  }
+  const userData = userDocSnap.data();
+  const roomData = userData.rooms[room];
+  let roomStatus = "not started"; // Спочатку вважаємо, що кімната ще не почата
+  let hasFail = false;
+  let hasEmpty = false;
+  for (const [interactiveKey, result] of Object.entries(roomData)) {
+    if (result === "fail") {
+      hasFail = true;
+      break; // Якщо є fail, кімната не пройдена
+    }
+    if (result === "") {
+      hasEmpty = true; // Якщо є порожні значення, кімната ще не завершена
+    }
+  }
+  if (hasFail) {
+    roomStatus = "failed";
+  } else if (!hasEmpty) {
+    roomStatus = "passed";
+  } else if (hasEmpty && !hasFail) {
+    roomStatus = "in progress";
+  }
+  await updateDoc(userDocRef, {
+    [`rooms.${room}.status`]: roomStatus
+  });
+  console.log(`Статус кімнати ${room} оновлений на ${roomStatus}`);
+}
+// Функція для оновлення значення інтерактиву
+window.updateValueInRoom = async function (room, index, result) {
+  const userId = localStorage.getItem("UID");
+  if (!userId) {
+    console.log('User is not authenticated');
+    return;
+  }
+  const userDocRef = doc(db, "users", userId);
+  try {
+    const interactiveKey = `interactive${index + 1}`;
+    await updateDoc(userDocRef, {
+      [`rooms.${room}.${interactiveKey}`]: result
+    });
+    console.log(`Значення для ${interactiveKey} в кімнаті ${room} успішно оновлено!`);
+    await updateRoomStatus(userId, room);  // Оновлюємо статус кімнати
+  } catch (error) {
+    console.error("Помилка під час оновлення даних у Firestore:", error);
+  }
+}
+window.addStatusToAllUsers = async function () {
+  const usersCollectionRef = collection(db, "users");
+  const usersSnapshot = await getDocs(usersCollectionRef);
+  // Перебираємо кожного користувача
+  for (const userDoc of usersSnapshot.docs) {
+    const userId = userDoc.id;
+    const userData = userDoc.data();
+    // Оновлюємо кожну кімнату, додаючи статус "not started", якщо він ще не є
+    const rooms = userData.rooms;
+    for (const roomName in rooms) {
+      if (rooms.hasOwnProperty(roomName)) {
+        // Якщо в кімнаті немає статусу, то додаємо його
+        if (!rooms[roomName].hasOwnProperty('status')) {
+          rooms[roomName].status = "not started";
+        }
+      }
+    }
+    // Оновлюємо документ користувача в Firestore з новими статусами
+    await updateDoc(doc(db, "users", userId), {
+      rooms: rooms
+    });
+    console.log(`Status added to rooms for user ${userId}`);
+  }
+}
+   //need to delete
+function getRandomInteractiveResult() {
+  const outcomes = ["", "passed", "failed"];
+  const randomIndex = Math.floor(Math.random() * outcomes.length);
+  return outcomes[randomIndex];
+}
+// Функція для генерації випадкового віку
+function getRandomAge() {
+  return Math.floor(Math.random() * 100); // Вік від 0 до 99
+}
+// Основна функція для генерації тестових користувачів
+window.generateTestUsers = async function(numUsers) {
+  for (let i = 0; i < numUsers; i++) {
+    const userId = `user${i + 1}`; // Унікальний ідентифікатор користувача
+    const username = `User ${i + 1}`;
+    const email = `user${i + 1}@example.com`;
+    const age = getRandomAge();
+    await initializeUserRooms(userId, username, email, age); // Ініціалізація користувача
+    // Оновлення статусу кімнат для кожного користувача
+    for (const roomName of Object.keys(roomsConfig)) {
+      const roomData = {}; 
+      // Генерація випадкових результатів для інтерактивів
+      for (let i = 1; i <= roomsConfig[roomName]; i++) {
+        roomData[`interactive${i}`] = getRandomInteractiveResult();
+      }
+      roomData.status = "not started"; // Початковий статус кімнати
+      const userDocRef = doc(db, "users", userId);
+      await updateDoc(userDocRef, {
+        [`rooms.${roomName}`]: roomData
+      });
+      // Виклик функції оновлення статусу кімнати
+      await updateRoomStatus(userId, roomName);
+    }
+    console.log(`Test user ${userId} generated and room statuses updated.`);
+  }
+}
+</script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <!--  Swiper  -->
+  <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+  <script>
+var mySwiper = new Swiper('.swiper-container', {
+    // Optional parameters
+    direction: 'horizontal',
+    loop: true,
+    // Default parameters
+    slidesPerView: 1,
+    // Responsive breakpoints
+    breakpoints: {
+        // when window width is <= 768px
+        768: {
+            slidesPerView: 3,
+            loop: false,
+        },
+        // when window width is <= 480px
+        480: {
+            slidesPerView: 1,
+            loop: false,
+        }
+    },
+    // If we need pagination
+    pagination: {
+        el: '.swiper-pagination',
+    },
+    // Navigation arrows
+    navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+    }
+})
+</script>
+</body>
+</html>
