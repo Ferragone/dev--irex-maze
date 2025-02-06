@@ -1,4 +1,4 @@
-<!DOCTYPE html><!--  This site was created in Webflow. https://webflow.com  --><!--  Last Published: Thu Jan 16 2025 10:08:53 GMT+0000 (Coordinated Universal Time)  -->
+<!DOCTYPE html><!--  This site was created in Webflow. https://webflow.com  --><!--  Last Published: Thu Feb 06 2025 18:32:59 GMT+0000 (Coordinated Universal Time)  -->
 <html data-wf-page="674b7ab411910bf4b85c388f" data-wf-site="656660cb808a92be1eef2a99">
 <head>
   <meta charset="utf-8">
@@ -21,7 +21,7 @@
 ::selection {background: #FD92FE; color: #262731; text-shadow: none;}
 </style>
 </head>
-<body class="body-int">
+<body class="body-int center">
   <div class="w-layout-blockcontainer container-25 w-container">
     <div class="div-block-4442">
       <div class="green-block padding-40">
@@ -46,7 +46,7 @@
   <script src="https://d3e54v103j8qbb.cloudfront.net/js/jquery-3.5.1.min.dc5e7f18c8.js?site=656660cb808a92be1eef2a99" type="text/javascript" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
   <script src="../js/webflow.js" type="text/javascript"></script>
   <script type="module">
-// Імпорт функцій Firebase
+// Імпортуємо функції Firebase
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js';
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js';
 import { getFirestore, doc, setDoc, updateDoc, collection, getDocs, getDoc } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js';
@@ -60,186 +60,377 @@ window.firebaseConfig = {
   appId: "1:1039335001528:web:a3c4c26916d4f50170534d",
   measurementId: "G-7L4GDB8H1Z"
 };
+const errorMessages = {
+  "Firebase: Error (auth/invalid-credential).": "Невірний логін або пароль.",
+  "Firebase: Error (auth/email-already-in-use).": "Цей логін вже використовується.",
+  "Firebase: Error (auth/operation-not-allowed).": "Операція не дозволена.",
+  "Firebase: Error (auth/weak-password).": "Пароль занадто слабкий.",
+  "Firebase: Error (auth/invalid-email).": "Невірний формат логіну"
+  // Додати інші повідомлення за потребою
+};
 // Налаштування кімнат
 const roomsConfig = {
-  room1: 1,
-  room2: 5,
-  room3: 3,
-  room4: 11,
-  room5: 6,
-  room6: 1,
-  room7: 7,
-  room8: 2,
-  room9: 2,
-  room10: 2
+  room1: 1, room2: 5, room3: 3, room4: 2, room5: 3,
+  room6: 1, room7: 2, room8: 3, room9: 1, room10: 1
 };
 // Ініціалізація Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
-// Функція для реєстрації користувача
-function handleSignUp(e) {
-  e.preventDefault();
-  e.stopPropagation();
-  const email = document.getElementById('signup-email').value;
-  const password = document.getElementById('signup-password').value;
-  const age = document.getElementById('age').value;
-  createUserWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      // Успішна реєстрація
-      const user = userCredential.user;
-      window.userUID = user.uid;
-      localStorage.setItem('UID', user.uid);
-      initializeUserRooms(user.uid, "name", email, age);
-    })
-    .catch((error) => {
-      const errorMessage = error.message;
-      const errorText = document.getElementById('signup-error-message');
-      if (errorText) {
-        errorText.innerHTML = errorMessage;
-      }
-    });
-}
-// Функція для входу
-function handleSignIn(e) {
-  e.preventDefault();
-  e.stopPropagation();
-  const email = document.getElementById('login-email').value;
-  const password = document.getElementById('login-password').value;
-  signInWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      // Успішний вхід
-      const user = userCredential.user;
-      window.userUID = user.uid;
-      localStorage.setItem('UID', user.uid);
-    })
-    .catch((error) => {
-      const errorMessage = error.message;
-      const errorText = document.getElementById('signin-error-message');
-      if (errorText) {
-        errorText.innerHTML = errorMessage;
-      }
-    });
-}
-window.fetchData = async function() {
-  // Отримуємо всі документи з колекції 'users'
-  const usersCollectionRef = collection(db, "users"); // Замість db.collection
-  const usersSnapshot = await getDocs(usersCollectionRef); // Замість db.collection().get()
-  const usersData = usersSnapshot.docs.map(doc => doc.data()); // Отримуємо дані з кожного документу
-  // Лог для перевірки даних
-  console.log(usersData);
-  // Створюємо об'єкти для підрахунку кількості людей за віковими групами та статусами кімнат
-  const ageGroups = {
-    "0-10": 0,
-    "11-16": 0,
-    "17-25": 0,
-    "26-35": 0,
-    "36-45": 0,
-    "46-59": 0,
-    "60+": 0
-  };
-  const roomsData = {};
-  // Перебираємо кожного користувача
-  usersData.forEach(user => {
-    const age = user.age;
-    // Підраховуємо вікові групи
-    if (age <= 10) {
-      ageGroups["0-10"]++;
-    } else if (age >= 11 && age <= 16) {
-      ageGroups["11-16"]++;
-    } else if (age >= 17 && age <= 25) {
-      ageGroups["17-25"]++;
-    } else if (age >= 26 && age <= 35) {
-      ageGroups["26-35"]++;
-    } else if (age >= 36 && age <= 45) {
-      ageGroups["36-45"]++;
-    } else if (age >= 46 && age <= 59) {
-      ageGroups["46-59"]++;
-    } else if (age >= 60) {
-      ageGroups["60+"]++;
-    }
-    // Обробляємо кімнати для кожного користувача
-    const rooms = user.rooms;
-    Object.keys(rooms).forEach(roomName => {
-      const roomStatus = rooms[roomName].status;
-      // Ініціалізуємо об'єкт для кожної кімнати
-      if (!roomsData[roomName]) {
-        roomsData[roomName] = { notStarted: 0, inProgress: 0, passed: 0, failed: 0 };
-      }
-      // Підраховуємо статуси для кожної кімнати
-      if (roomStatus === 'not started') {
-        roomsData[roomName].notStarted += 1;
-      } else if (roomStatus === 'in progress') {
-        roomsData[roomName].inProgress += 1;
-      } else if (roomStatus === 'passed') {
-        roomsData[roomName].passed += 1;
-      } else if (roomStatus === 'failed') {
-        roomsData[roomName].failed += 1;  // Виправлено з "passed" на "failed"
-      }
-    });
-  });
-  // Повертаємо об'єкт з віковими групами та даними по кімнатах
-  return { ageGroups, roomsData };
-};
-// Функція для виходу
-function handleSignOut() {
-  signOut(auth).then(() => {
-    console.log('User signed out');
-  }).catch((error) => {
-    console.log(error.message);
-  });
-}
-// Відслідковування стану авторизації
-onAuthStateChanged(auth, (user) => {
-  let publicElements = document.querySelectorAll("[data-onlogin='hide']");
-  let privateElements = document.querySelectorAll("[data-onlogin='show']");
-  if (user) {
-    // Користувач авторизований
-    const uid = user.uid;
-    privateElements.forEach((element) => {
-      element.style.display = "initial";
-    });
-    publicElements.forEach((element) => {
-      element.style.display = "none";
-    });
-  } else {
-    // Користувач не авторизований
-    publicElements.forEach((element) => {
-      element.style.display = "initial";
-    });
-    privateElements.forEach((element) => {
-      element.style.display = "none";
-    });
+let email = "";
+window.age = "";
+window.gender = "";
+const heroMap = document.getElementById('hero-map');
+const heroComponent = document.getElementById('hero-component');
+const helloSection = document.getElementById('section-hello');
+  // показуємо статус кімнат
+window.showCompletedRooms = async function(user) {
+  // Отримуємо поточного авторизованого користувача
+  if (!user) {
+    console.log("Користувач не авторизований");
+    return;
   }
-});
-// Функція ініціалізації даних користувача
-async function initializeUserRooms(userId, username, email, age) {
+  const userId = user.uid;  // Отримуємо UID користувача
+  // Отримуємо дані користувача з Firestore
   const userDocRef = doc(db, "users", userId);
-  const userAge = Number(age);
-  if (isNaN(userAge)) {
-    throw new Error("Age must be a valid number.");
+  try {
+    const userDocSnap = await getDoc(userDocRef);
+    if (!userDocSnap.exists()) {
+      console.log("Документ користувача не знайдено");
+      return;
+    }
+    const userData = userDocSnap.data();
+    const rooms = userData.rooms;
+    // Список кімнат з жорстким порядком (room1, room2, ... , room10)
+    const roomNames = [
+      'room1', 'room2', 'room3', 'room4', 'room5',
+      'room6', 'room7', 'room8', 'room9', 'room10'
+    ];
+    // Перебираємо кожну кімнату за порядком roomNames
+    roomNames.forEach((roomName) => {
+      const roomData = rooms[roomName];  // Дістали дані кімнати
+      if (!roomData) return;  // Якщо кімната не існує, пропускаємо
+      const roomStatus = roomData.status;  // Статус кімнати
+      // Визначаємо правильний блок на сайті за id
+      const cardBlock = document.getElementById(`card-${roomName.replace('room', '')}`);
+      // Перевіряємо, чи блок існує
+      if (!cardBlock) return;
+      // Оновлюємо клас в залежності від статусу кімнати
+      if (roomStatus === 'passed') {
+        cardBlock.classList.add('completed');
+        cardBlock.classList.remove('uncompleted');
+      } else if (roomStatus === 'not started') {
+        cardBlock.classList.add('uncompleted');
+        cardBlock.classList.remove('completed');
+      }
+    });
+  } catch (error) {
+    console.error("Помилка при отриманні даних користувача з Firestore:", error);
   }
-  // Створення структури для даних користувача
-  const userData = {
-    name: username, 
-    email: email, 
-    age: userAge,
-    rooms: {} // Дані по кімнатах
-  };
-  // Створюємо об'єкт rooms з результатами для кожної кімнати
+};
+  function linkGenerator(){
+   const userId = auth.currentUser.uid;
+   const map = document.getElementById ('map-grid')
+   const links = map.querySelectorAll('a'); // Отримуємо всі елементи <a>
+   console.log(links);	
+    links.forEach(link => {
+        const url = new URL(link.href); // Створюємо об'єкт URL для лінки
+        url.searchParams.set('UID', userId); // Додаємо параметр userID
+        link.href = url.toString(); // Оновлюємо лінку
+    });
+  }
+ // показуємо статус кімнат для юзера по ід
+window.showCompletedRoomsbyUserID = async function(userId) {
+  // Отримуємо дані користувача з Firestore
+  const userDocRef = doc(db, "users", userId);
+  try {
+    const userDocSnap = await getDoc(userDocRef);
+    if (!userDocSnap.exists()) {
+      console.log("Документ користувача не знайдено");
+      return;
+    }
+    const userData = userDocSnap.data();
+    const rooms = userData.rooms;
+    // Перевірка на наявність кімнат
+    if (!rooms) {
+      console.log("Кімнати не знайдено");
+      return;
+    }
+    // Список кімнат з жорстким порядком (room1, room2, ... , room10)
+    const roomNames = [
+      'room1', 'room2', 'room3', 'room4', 'room5',
+      'room6', 'room7', 'room8', 'room9', 'room10'
+    ];
+    // Перебираємо кожну кімнату за порядком roomNames
+    for (let roomName of roomNames) {
+      const roomData = rooms[roomName];  // Дістали дані кімнати
+      if (!roomData) continue;  // Якщо кімната не існує, пропускаємо
+      const roomStatus = roomData.status;  // Статус кімнати
+      // Перевіряємо, чи є статус і чи він коректний
+      if (!roomStatus || typeof roomStatus !== 'string') {
+        console.log(`Статус кімнати ${roomName} не знайдений або має некоректне значення`);
+        continue;
+      }
+      // Визначаємо правильний блок на сайті за id
+      const cardBlock = document.getElementById(`card-${roomName.replace('room', '')}`);
+      // Перевіряємо, чи блок існує
+      if (!cardBlock) {
+        console.log(`Елемент для ${roomName} не знайдений на сторінці`);
+        continue;
+      }
+      // Оновлюємо клас в залежності від статусу кімнати
+      if (roomStatus === 'passed') {
+        cardBlock.classList.add('completed');
+        cardBlock.classList.remove('uncompleted');
+      } else if (roomStatus === 'not started') {
+        cardBlock.classList.add('uncompleted');
+        cardBlock.classList.remove('completed');
+      } else {
+        console.log(`Невідомий статус для кімнати ${roomName}: ${roomStatus}`);
+      }
+    }
+  } catch (error) {
+    console.error("Помилка при отриманні даних користувача з Firestore:", error);
+  }
+};
+// Отримання значення вибраного радіобатона
+window.getSelectedRadioValue = (name) => {
+  const radios = document.getElementsByName(name);
+  for (let radio of radios) {
+    if (radio.checked) {
+      return radio.value;
+    }
+  }
+  return null;
+};
+  //сказати привіт 
+	function sayHello(){
+       const helloUserField = document.getElementById('hello-user');
+       const user = auth.currentUser;
+       const email = user.email;
+       const nickname = email.split('@')[0];  // Беремо частину до @
+	   console.log(helloUserField)
+        // Формуємо повідомлення
+       const greetingMessage = `Привіт, ${nickname}!`;
+	   console.log(greetingMessage)
+      // Вставляємо в текстове поле
+       helloUserField.innerHTML = nickname;
+    }
+//показувати мапу
+  function showMapForCurrentUser(state){
+	if (state){
+      sayHello();
+      linkGenerator()
+      heroMap.style.display = 'flex';  // Показуємо карту
+      heroComponent.style.display = 'none'; //Ховаємо hero_component
+	  helloSection.style.display = 'flex'  //показуємо привіт 
+      showCompletedRooms(auth.currentUser);
+    }
+    else{
+	  heroMap.style.display = 'none';  // Показуємо карту
+	  document.getElementById('pop-up-log-in').style.display = 'none'
+      document.getElementById('pop-up').style.display = 'none'
+      document.getElementById('sign-up').style.display = 'none'
+      heroComponent.style.display = 'flex';//показуємо hero_component
+      helloSection.style.display = 'none'// ховаємо секцію привіт
+    }
+  }
+// Реєстрація користувача
+window.handleSignUp = (e) => {
+  e.preventDefault();
+  e.stopPropagation();
+  const nickname = document.getElementById('signup-nickname').value;
+  const password = document.getElementById('signup-password-2').value;
+  const helpText = document.querySelector('.ms-help-text-s');
+  const inputLabel = document.querySelector('.ms-input-label');
+  const inputLine = document.querySelector('.ms-input');
+  const nicknameRegex = /^[a-zA-Z0-9-]+$/; // Латинські букви, цифри та дефіси без пробілів
+  if (!nickname || !password || !age) {
+    document.getElementById('signup-error-message').innerHTML = "Недостатньо символів";
+    if (helpText) helpText.classList.remove('hide-text');
+    if (inputLabel) inputLabel.classList.add('error-label');
+    if (inputLine) inputLine.classList.add('error-line');
+    return;
+  } else if (!nicknameRegex.test(nickname)) {
+    document.getElementById('signup-error-message').innerHTML = "Логін повинен містити тільки латинські букви, цифри та дефіси без пробілів";
+    if (helpText) helpText.classList.remove('hide-text');
+    if (inputLabel) inputLabel.classList.add('error-label');
+    if (inputLine) inputLine.classList.add('error-line');
+    return;
+  } else {
+    if (helpText) helpText.classList.add('hide-text');
+    if (inputLabel) inputLabel.classList.remove('error-label');
+    if (inputLine) inputLine.classList.remove('error-line');
+  }
+  const email = `${nickname}@example.com.ua`;
+  createUserWithEmailAndPassword(auth, email, password)
+    .then(({ user }) => {
+      window.userUID = user.uid;
+      localStorage.setItem('UID', user.uid);
+      initializeUserRooms(user.uid, nickname, email, age, gender);
+      showMapForCurrentUser(true)
+    })
+    .catch((error) => {
+      const errorMessage = errorMessages[error.message] || error.message;
+      document.getElementById('signup-error-message').innerHTML = errorMessage;
+      if (helpText) helpText.classList.add('hide-text');
+      if (inputLabel) inputLabel.classList.add('error-label');
+      if (inputLine) inputLine.classList.add('error-line');
+    });
+};
+// Вхід користувача
+window.handleSignIn = (e) => {
+  e.preventDefault();
+  e.stopPropagation();
+  const nickname = document.getElementById('signin-nickname').value;
+  const password = document.getElementById('signin-password').value;
+  const email = `${nickname}@example.com.ua`;
+	console.log(nickname)
+  	console.log(password)
+  signInWithEmailAndPassword(auth, email, password)
+    .then(({ user }) => {
+      window.userUID = user.uid;
+      console.log(user.uid)
+      localStorage.setItem('UID', user.uid);
+      showMapForCurrentUser(true)
+    })
+    .catch((error) => {
+    const errorMessage = errorMessages[error.message] || error.message;  // Використовуємо мапу або за замовчуванням виводимо англійське повідомлення
+      document.getElementById('signin-error-message').innerHTML = errorMessage;
+    });
+};
+// Вихід користувача
+window.handleSignOut = () => {
+  signOut(auth)
+    .then(() => {
+      console.log('User signed out');
+      showMapForCurrentUser(false)
+     const form = document.getElementById('wf-form-Form-Gender');
+    console.log(form)
+     form.reset();
+    window.location.replace(window.location.href);
+    })
+    .catch((error) => {
+      console.log('Error signing out:', error.message);
+    });
+};
+// Відслідковування стану авторизації
+window.checkUserAuth = () => {
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+     showMapForCurrentUser(true) 
+     console.log('User is signed in:', user);
+    } else {
+      showMapForCurrentUser(false)
+      console.log('User is signed out');
+    }
+  });
+};
+// Ініціалізація даних користувача
+async function initializeUserRooms(userId, nickname, email, age, gender) {
+  const userDocRef = doc(db, "users", userId);
+  const userData = { name: nickname, email, age, gender, rooms: {} };
   for (const [roomName, interactiveCount] of Object.entries(roomsConfig)) {
     const roomData = {};
     for (let i = 1; i <= interactiveCount; i++) {
-      roomData[`interactive${i}`] = ""; // Порожнє значення для кожного інтерактиву
+      roomData[`interactive${i}`] = "";
     }
-	roomData.status = "not started"; 
+    roomData.status = "not started";
     userData.rooms[roomName] = roomData;
   }
-  // Зберігаємо документ користувача в Firestore
   await setDoc(userDocRef, userData);
   console.log(`User data initialized for ${userId}`);
 }
-window.fetchInteractiveData = async function () {
+// Отримання даних користувачів для аналізу вікових груп та кімнат
+window.fetchData = async () => {
+  const usersCollectionRef = collection(db, "users");
+  const usersSnapshot = await getDocs(usersCollectionRef);
+  const usersData = usersSnapshot.docs.map(doc => doc.data());
+  const ageGroups = { "10-16": 0, "17-25": 0, "26-35": 0, "36-45": 0, "46-59": 0, "60+": 0 };
+  const roomsData = {};
+  usersData.forEach(user => {
+    const { age, rooms } = user;
+    if (ageGroups[age]) ageGroups[age]++;
+    Object.keys(rooms).forEach(roomName => {
+      const roomStatus = rooms[roomName].status;
+      if (!roomsData[roomName]) roomsData[roomName] = { notStarted: 0, inProgress: 0, passed: 0, failed: 0 };
+      roomsData[roomName][roomStatus]++;
+    });
+  });
+  return { ageGroups, roomsData };
+};
+// Оновлення статусу кімнати
+async function updateRoomStatus(userId, room) {
+  const userDocRef = doc(db, "users", userId);
+  const userDocSnap = await getDoc(userDocRef);
+  if (!userDocSnap.exists()) return console.log("User document not found");
+  const userData = userDocSnap.data();
+  const roomData = userData.rooms[room];
+  let roomStatus = "test";
+  let hasEmpty = false;
+  let allPassedOrFailed = true; // Початково припускаємо, що всі інтерактиви мають статус "passed" або "failed"
+  for (const [interactiveKey, result] of Object.entries(roomData)) {
+    if (result === "") {
+      hasEmpty = true;
+      break; // Якщо є порожнє значення, зупиняємо перевірку
+    }
+    if (result !== "failed" && result !== "passed" && result !== "not started") {
+      allPassedOrFailed = false; // Якщо є статус, який не "failed" або "passed", ставимо allPassedOrFailed в false
+    }
+  }
+console.log("hasEmpty " + hasEmpty)
+  console.log("allPassedOrFailed "+ allPassedOrFailed)
+  // Якщо хоча б один інтерактив порожній, встановлюємо статус "not started"
+  if (hasEmpty) {
+    roomStatus = "not started";
+  }
+  // Якщо всі інтерактиви мають значення "passed" або "failed", і жоден не порожній, встановлюємо статус "passed"
+  else if (allPassedOrFailed) {
+    roomStatus = "passed";
+  }
+  // Оновлюємо статус кімнати
+  await updateDoc(userDocRef, { [`rooms.${room}.status`]: roomStatus });
+  console.log(`Статус кімнати ${room} оновлений на ${roomStatus}`);
+}
+// Оновлення значення інтерактиву
+window.updateValueInRoom = async (room, index, result) => {
+  //const user = auth.currentUser;
+  //if (!user) return console.log('Користувач не авторизований');
+	checkUserAuth();
+  //const userId = user.uid;
+  const userId = localStorage.getItem('UID')
+  const userDocRef = doc(db, "users", userId);
+  const interactiveKey = `interactive${index + 1}`;
+  try {
+    await updateDoc(userDocRef, { [`rooms.${room}.${interactiveKey}`]: result });
+    console.log(`Значення для ${interactiveKey} в кімнаті ${room} успішно оновлено!`);
+    await updateRoomStatus(userId, room);
+  } catch (error) {
+    console.error("Помилка під час оновлення даних у Firestore:", error);
+  }
+};
+// Генерація тестових користувачів
+window.generateTestUsers = async (numUsers) => {
+  for (let i = 0; i < numUsers; i++) {
+    const userId = `user${i + 1}`;
+    const username = `User ${i + 1}`;
+    const email = `user${i + 1}@example.com`;
+    const age = Math.floor(Math.random() * 100);
+    await initializeUserRooms(userId, username, email, age);
+    for (const roomName of Object.keys(roomsConfig)) {
+      const roomData = {};
+      for (let i = 1; i <= roomsConfig[roomName]; i++) {
+        roomData[`interactive${i}`] = ["", "passed", "failed"][Math.floor(Math.random() * 3)];
+      }
+      roomData.status = "not started";
+      const userDocRef = doc(db, "users", userId);
+      await updateDoc(userDocRef, { [`rooms.${roomName}`]: roomData });
+      await updateRoomStatus(userId, roomName);
+    }
+    console.log(`Test user ${userId} generated and room statuses updated.`);
+  }
+};
+  window.fetchInteractiveData = async function () {
     // Отримуємо всіх користувачів
     const usersSnapshot = await getDocs(collection(db, "users"));
     // Мапа для зберігання даних по інтерактивах
@@ -274,119 +465,6 @@ window.fetchInteractiveData = async function () {
         });
     });
     return interactiveData;  
-}
-// Функція для перевірки статусу кімнати
-async function updateRoomStatus(userId, room) {
-  const userDocRef = doc(db, "users", userId);
-  const userDocSnap = await getDoc(userDocRef);
-  if (!userDocSnap.exists()) {
-    console.log("User document not found");
-    return;
-  }
-  const userData = userDocSnap.data();
-  const roomData = userData.rooms[room];
-  let roomStatus = "not started"; // Спочатку вважаємо, що кімната ще не почата
-  let hasFail = false;
-  let hasEmpty = false;
-  for (const [interactiveKey, result] of Object.entries(roomData)) {
-    if (result === "fail") {
-      hasFail = true;
-      break; // Якщо є fail, кімната не пройдена
-    }
-    if (result === "") {
-      hasEmpty = true; // Якщо є порожні значення, кімната ще не завершена
-    }
-  }
-  if (hasFail) {
-    roomStatus = "failed";
-  } else if (!hasEmpty) {
-    roomStatus = "passed";
-  } else if (hasEmpty && !hasFail) {
-    roomStatus = "in progress";
-  }
-  await updateDoc(userDocRef, {
-    [`rooms.${room}.status`]: roomStatus
-  });
-  console.log(`Статус кімнати ${room} оновлений на ${roomStatus}`);
-}
-// Функція для оновлення значення інтерактиву
-window.updateValueInRoom = async function (room, index, result) {
-  const userId = localStorage.getItem("UID");
-  if (!userId) {
-    console.log('User is not authenticated');
-    return;
-  }
-  const userDocRef = doc(db, "users", userId);
-  try {
-    const interactiveKey = `interactive${index + 1}`;
-    await updateDoc(userDocRef, {
-      [`rooms.${room}.${interactiveKey}`]: result
-    });
-    console.log(`Значення для ${interactiveKey} в кімнаті ${room} успішно оновлено!`);
-    await updateRoomStatus(userId, room);  // Оновлюємо статус кімнати
-  } catch (error) {
-    console.error("Помилка під час оновлення даних у Firestore:", error);
-  }
-}
-window.addStatusToAllUsers = async function () {
-  const usersCollectionRef = collection(db, "users");
-  const usersSnapshot = await getDocs(usersCollectionRef);
-  // Перебираємо кожного користувача
-  for (const userDoc of usersSnapshot.docs) {
-    const userId = userDoc.id;
-    const userData = userDoc.data();
-    // Оновлюємо кожну кімнату, додаючи статус "not started", якщо він ще не є
-    const rooms = userData.rooms;
-    for (const roomName in rooms) {
-      if (rooms.hasOwnProperty(roomName)) {
-        // Якщо в кімнаті немає статусу, то додаємо його
-        if (!rooms[roomName].hasOwnProperty('status')) {
-          rooms[roomName].status = "not started";
-        }
-      }
-    }
-    // Оновлюємо документ користувача в Firestore з новими статусами
-    await updateDoc(doc(db, "users", userId), {
-      rooms: rooms
-    });
-    console.log(`Status added to rooms for user ${userId}`);
-  }
-}
-   //need to delete
-function getRandomInteractiveResult() {
-  const outcomes = ["", "passed", "failed"];
-  const randomIndex = Math.floor(Math.random() * outcomes.length);
-  return outcomes[randomIndex];
-}
-// Функція для генерації випадкового віку
-function getRandomAge() {
-  return Math.floor(Math.random() * 100); // Вік від 0 до 99
-}
-// Основна функція для генерації тестових користувачів
-window.generateTestUsers = async function(numUsers) {
-  for (let i = 0; i < numUsers; i++) {
-    const userId = `user${i + 1}`; // Унікальний ідентифікатор користувача
-    const username = `User ${i + 1}`;
-    const email = `user${i + 1}@example.com`;
-    const age = getRandomAge();
-    await initializeUserRooms(userId, username, email, age); // Ініціалізація користувача
-    // Оновлення статусу кімнат для кожного користувача
-    for (const roomName of Object.keys(roomsConfig)) {
-      const roomData = {}; 
-      // Генерація випадкових результатів для інтерактивів
-      for (let i = 1; i <= roomsConfig[roomName]; i++) {
-        roomData[`interactive${i}`] = getRandomInteractiveResult();
-      }
-      roomData.status = "not started"; // Початковий статус кімнати
-      const userDocRef = doc(db, "users", userId);
-      await updateDoc(userDocRef, {
-        [`rooms.${roomName}`]: roomData
-      });
-      // Виклик функції оновлення статусу кімнати
-      await updateRoomStatus(userId, roomName);
-    }
-    console.log(`Test user ${userId} generated and room statuses updated.`);
-  }
 }
 </script>
 </body>
